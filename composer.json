@@ -1,0 +1,20 @@
+{
+    "name": "nslyx/mdoc",
+    "description": "Gen model doc for TP5.1",
+    "type": "composer-plugin",
+    "require": {
+        "topthink/framework": "5.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "mdoc\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zxtian",
+            "email": "ss_zxt@126.com"
+        }
+    ]
+}
