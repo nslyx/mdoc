@@ -1,11 +1,12 @@
 <?php
 namespace mdoc;
 
+use think\facade\App;
+
 class GenModelDoc {
 
     public static function test()
     {
-        die('There is sth wrong.');
+        return App::getAppPath();
     }
-
 }
