@@ -26,7 +26,7 @@ class ModelDoc extends Command
         defined('APP_PATH') OR define('APP_PATH', App::getAppPath());
 
         $model = $input->getArgument('model');
-
+        $model = trim($model, DIRECTORY_SEPARATOR);
 
         self::syncModelDoc($model);
 
@@ -36,14 +36,15 @@ class ModelDoc extends Command
 
     /**
      * 同步模型的文档注释
-     * @param $file
+     * @param string $FN
      * @param null $FP
      */
-    private static function syncModelDoc($file, $FP = null)
+    private static function syncModelDoc($FN = '', $FP = null)
     {
-        $FP || $FP = APP_PATH;                          // 如果未指定文件目录则认为基于应用目录
-        $FN = trim($file, DIRECTORY_SEPARATOR); // 去掉两侧无谓的目录分隔符
-        $FF = $FP.$FN;  // File Full Path Name.
+        // 如果未指定文件目录则认为基于应用目录
+        $FP || $FP = APP_PATH;
+        // File Full Path Name.
+        $FF = $FP.$FN;
 
         if (!file_exists($FF)) {
             // 该 文件/目录 不存在，直接忽略
@@ -118,7 +119,7 @@ class ModelDoc extends Command
     }
 
     /**
-     *  create table 的结果 转成 文档需要的字符串
+     * Create Table 的结果 转成 文档需要的字符串
      * @param $str
      * @return string
      */
@@ -149,11 +150,11 @@ class ModelDoc extends Command
     }
 
     /**
-     *  根据注释内容更新文件文本
-     * @param $text
-     * @param $doc
+     * 根据注释内容更新文件文本
+     * @param string $text
+     * @param string $doc
      * @param array $fields
-     * @return
+     * @return string
      */
     private static function updateFileTextWithDoc($text, $doc, Array $fields)
     {
