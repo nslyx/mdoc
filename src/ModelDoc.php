@@ -46,6 +46,7 @@ class ModelDoc extends Command
         // File Full Path Name.
         $FF = $FP.$FN;
 
+        // die($FF);
         if (!file_exists($FF)) {
             // 该 文件/目录 不存在，直接忽略
 
@@ -60,7 +61,7 @@ class ModelDoc extends Command
                     // 当前目录与上级目录不能算在内
                     continue;
                 }
-                self::syncModelDoc($file, $FF);
+                self::syncModelDoc($file, $FF.DIRECTORY_SEPARATOR);
             }
             $DIR->close();
 
@@ -112,6 +113,7 @@ class ModelDoc extends Command
             $doc = self::mkCreateTableToDocStr($res[0]['Create Table']);
             $txt = self::updateFileTextWithDoc($text, $doc, $model->getTableFields());
 
+            echo 'Dispose '.$FN.PHP_EOL;
             file_put_contents($FF, $txt);
         }
 
@@ -163,10 +165,12 @@ class ModelDoc extends Command
             // 已经有注释了，需要在已经有的注释上进行调整
             $before = $notes[1]; // 这部分完完整整的当前注释
             $pattern = $replace = [];
-            foreach ($fields as $field) {
-                $pattern[] = '/^[\s*]*@property\s+\$'.$field.'\s+.*?$\n/m';
-                $replace[] = '';
-            }
+            // foreach ($fields as $field) {
+            //     $pattern[] = '/^[\s*]*@property\s+\$'.$field.'\s+.*?$\n/m';
+            //     $replace[] = '';
+            // }
+            $pattern[] = '/^[\s*]*@property\s+\$\w+\s+.*?$\n/m';
+            $replace[] = '';
             $pattern[] = '/^[\s*]*$\n/m';
             $replace[] = '';
             $pattern[] = '/(^[\s\*]*\/$)/m';
