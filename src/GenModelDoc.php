@@ -1,12 +1,13 @@
 <?php
 namespace mdoc;
 
-use think\facade\App;
+// use think\facade\App;
 
 class GenModelDoc {
 
     public static function test()
     {
-        return App::getAppPath();
+        return 'Hello Word';
+        // return App::getAppPath();
     }
 }
