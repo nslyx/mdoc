@@ -2,7 +2,9 @@
 
 namespace mdoc\console\command\model;
 
-class Doc
+use think\console\Command;
+
+class Doc extends Command
 {
     protected function configure()
     {
