@@ -46,7 +46,6 @@ class ModelDoc extends Command
         // File Full Path Name.
         $FF = $FP.$FN;
 
-        // die($FF);
         if (!file_exists($FF)) {
             // 该 文件/目录 不存在，直接忽略
 
@@ -69,9 +68,6 @@ class ModelDoc extends Command
         }
 
         // 通过后即为合法的模型文件
-        $pi = pathinfo($FF);
-        // isset($pi['extension'])
-
         if (is_file($FF)) {
             // 目标为文件，可以对文件进行解析
             $text = file_get_contents($FF);
@@ -91,8 +87,8 @@ class ModelDoc extends Command
                 return;
             }
 
-
             // 命名空间 + 文件名称 即为该 Model 的 Name
+            $pi = pathinfo($FF);
             $cn = $m[1].'\\'.$pi['filename'];
             if (!class_exists($cn) || !is_subclass_of($cn, 'think\model')) {
                 // 该类不存在 或者不是模型类
@@ -111,7 +107,7 @@ class ModelDoc extends Command
             }
 
             $doc = self::mkCreateTableToDocStr($res[0]['Create Table']);
-            $txt = self::updateFileTextWithDoc($text, $doc, $model->getTableFields());
+            $txt = self::updateFileTextWithDoc($text, $doc); // , $model->getTableFields()
 
             echo 'Dispose '.$FN.PHP_EOL;
             file_put_contents($FF, $txt);
@@ -158,7 +154,7 @@ class ModelDoc extends Command
      * @param array $fields
      * @return string
      */
-    private static function updateFileTextWithDoc($text, $doc, Array $fields)
+    private static function updateFileTextWithDoc($text, $doc, Array $fields = [])
     {
         $pattern = "/(\/\*\*(?:.|\n)*?\*\/)\s*\n\s*class/";
         if (preg_match($pattern, $text, $notes)) {
